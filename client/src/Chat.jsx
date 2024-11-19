@@ -167,7 +167,7 @@ const Chat = ({ socket, userName, room }) => {
 
   return (
     <Card fluid>
-      <CardContent header={`Chat en vivo | Sala: ${room}`} />
+      <CardContent header={`Chat en tiempo real | Sala: ${room}`} />
       <CardContent extra>
         <ScrollToBottom>
           <Card.Content style={{ height: "400px", overflowY: "auto" }}>

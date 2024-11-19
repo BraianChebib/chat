@@ -13,7 +13,7 @@ import {
 } from "semantic-ui-react";
 
 const port = import.meta.env.PORT || 3001;
-const host = import.meta.env.HOST || localhost;
+const host = import.meta.env.HOST || "localhost";
 
 const socket = io.connect(`http://${host}:${port}`);
 
