@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
+require("dotenv").config();
+const port = process.env.PORT || 5173;
+const host = process.env.HOST || localhost;
 
 const app = express();
 app.use(cors());
@@ -9,7 +12,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: `http://${host}:${port}`,
   },
 });
 
