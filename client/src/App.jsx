@@ -12,10 +12,9 @@ import {
   Input,
 } from "semantic-ui-react";
 
-const port = import.meta.env.PORT || 3001;
-const host = import.meta.env.HOST || "localhost";
+const port = import.meta.env.APP_API_URL || "http://localhost:3001";
 
-const socket = io.connect(`http://${host}:${port}`);
+const socket = io.connect(`${port}`);
 
 function App() {
   const [userName, setUserName] = useState("");
