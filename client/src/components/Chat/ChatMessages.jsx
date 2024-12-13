@@ -23,11 +23,11 @@ const ChatMessages = ({
   const [messageToDelete, setMessageToDelete] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
-  // Escucha la tecla Enter dentro del modal para guardar cambios
+  // Listens for the Enter key inside the modal to save changes
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Enter" && editModalOpen) {
-        handleEditSubmit(); // Llama a la función de guardar cambios al presionar Enter
+        handleEditSubmit(); // Calls the save changes function when Enter is pressed
       }
     };
 
@@ -36,7 +36,7 @@ const ChatMessages = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [editModalOpen, newMessageContent]); // Se ejecuta solo cuando se abre el modal o cambia el contenido del mensaje
+  }, [editModalOpen, newMessageContent]); // Runs only when the modal is opened or the message content changes
 
   const confirmDelete = (messageId) => {
     setMessageToDelete(messageId);
@@ -50,15 +50,15 @@ const ChatMessages = ({
   };
 
   const openEditModal = (message) => {
-    setNewMessageContent(message.message); // Establece el contenido del mensaje a editar
-    setEditingMessageId(message._id); // Establece el mensaje que se está editando
-    setEditModalOpen(true); // Abre el modal de edición
-    setOriginalMessageContent(message.message); // Guarda el contenido original
+    setNewMessageContent(message.message); // Sets the content of the message to edit
+    setEditingMessageId(message._id); // Sets the message being edited
+    setEditModalOpen(true); // Opens the edit modal
+    setOriginalMessageContent(message.message); // Saves the original content
   };
 
   const handleEditSubmit = () => {
-    submitEditMessage(); // Llama a la función para actualizar el mensaje
-    setEditModalOpen(false); // Cierra el modal después de la edición
+    submitEditMessage(); // Calls the function to update the message
+    setEditModalOpen(false); // Closes the modal after editing
   };
 
   return (
@@ -71,13 +71,13 @@ const ChatMessages = ({
             marginBottom: "15px",
             borderRadius: "8px",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-            backgroundColor: userName === item.author ? "#e6f7ff" : "#f5f5f5", // Diferente color para mensajes enviados y recibidos
+            backgroundColor: userName === item.author ? "#e6f7ff" : "#f5f5f5", // Different color for sent and received messages
           }}
           success={userName === item.author}
           info={userName !== item.author}
         >
           {editingMessageId === item._id ? (
-            // El campo de entrada dentro del modal de edición
+            // The input field inside the edit modal
             <Input
               value={newMessageContent}
               onChange={(e) => setNewMessageContent(e.target.value)}
@@ -98,7 +98,7 @@ const ChatMessages = ({
                       size="mini"
                       color="blue"
                       style={{ marginLeft: "10px" }}
-                      onClick={() => openEditModal(item)} // Abre el modal de edición
+                      onClick={() => openEditModal(item)} // Opens the edit modal
                     />
                     <Button
                       icon="trash"
@@ -133,7 +133,7 @@ const ChatMessages = ({
         </Message>
       ))}
 
-      {/* Modal para Confirmar Eliminación */}
+      {/* Modal to Confirm Deletion */}
       <Modal size="mini" open={open} onClose={() => setOpen(false)}>
         <Modal.Header>Confirmar Eliminación</Modal.Header>
         <Modal.Content>
@@ -149,7 +149,7 @@ const ChatMessages = ({
         </Modal.Actions>
       </Modal>
 
-      {/* Modal para Editar Mensaje */}
+      {/* Modal to Edit Message */}
       <Modal
         size="mini"
         open={editModalOpen}
@@ -170,9 +170,9 @@ const ChatMessages = ({
           <Button
             negative
             onClick={() => {
-              setEditModalOpen(false); // Cierra el modal de edición
-              setEditingMessageId(null); // Resetea el id del mensaje que se está editando
-              setNewMessageContent(""); // Resetea el contenido del mensaje a editar
+              setEditModalOpen(false); // Closes the edit modal
+              setEditingMessageId(null); // Resets the ID of the message being edited
+              setNewMessageContent(""); // Resets the content of the message to edit
             }}
           >
             Cancelar

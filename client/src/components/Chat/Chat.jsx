@@ -1,16 +1,16 @@
-// Importa las dependencias necesarias de React y Semantic UI
+// Import necessary dependencies from React and Semantic UI
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, Button, Segment } from "semantic-ui-react";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-// Importa componentes personalizados
-import ChatHeader from "./ChatHeader"; // Encabezado del chat
-import ChatMessages from "./ChatMessages"; // Lista de mensajes
-import ChatInput from "./ChatInput"; // Entrada de mensajes
+// Import custom components
+import ChatHeader from "./ChatHeader"; // Chat header
+import ChatMessages from "./ChatMessages"; // Message list
+import ChatInput from "./ChatInput"; // Message input
 
-// Componente principal del Chat
+// Main Chat component
 const Chat = ({ socket, userName, room, resetToInitialView }) => {
-  // Estados para gestionar mensajes, entrada de texto, y estado de escritura
+  // States to manage messages, text input, and typing state
   const [currentMessage, setCurrentMessage] = useState("");
   const [messagesList, setMessagesList] = useState([]);
   const [typingStatus, setTypingStatus] = useState("");
@@ -20,7 +20,7 @@ const Chat = ({ socket, userName, room, resetToInitialView }) => {
   const [newMessageContent, setNewMessageContent] = useState("");
   const [originalMessageContent, setOriginalMessageContent] = useState("");
 
-  // Maneja eventos de mensajes del servidor
+  // Handles server message events
   useEffect(() => {
     const handleMessageDeleted = (messageId) => {
       if (!messageId) return;
@@ -50,18 +50,18 @@ const Chat = ({ socket, userName, room, resetToInitialView }) => {
         setTimeout(() => {
           setTypingStatus("");
           setIsTyping(false);
-        }, 3000); // Desactiva el estado después de 3 segundos
+        }, 3000); // Disables the state after 3 seconds
       }
     };
 
-    // Registra eventos del servidor
+    // Registers server events
     socket.on("message_deleted", handleMessageDeleted);
     socket.on("message_edited", handleEditedMessage);
     socket.on("receive_message", handleReceiveMessage);
     socket.on("update_messages", handleUpdateMessages);
     socket.on("display_typing", displayTyping);
 
-    // Limpia eventos al desmontar el componente
+    // Cleans up events on component unmount
     return () => {
       socket.off("message_deleted", handleMessageDeleted);
       socket.off("message_edited", handleEditedMessage);
@@ -71,7 +71,7 @@ const Chat = ({ socket, userName, room, resetToInitialView }) => {
     };
   }, [socket, userName]);
 
-  // Carga historial de mensajes al unirse a la sala
+  // Loads message history when joining the room
   useEffect(() => {
     if (messagesList.length === 0 && room) {
       socket.emit("request_history", { room });
@@ -83,17 +83,17 @@ const Chat = ({ socket, userName, room, resetToInitialView }) => {
 
     socket.on("load_history", loadHistory);
 
-    // Limpia evento al desmontar
+    // Cleans up event on unmount
     return () => {
       socket.off("load_history", loadHistory);
     };
   }, [socket, room, messagesList]);
 
-  // Envía un mensaje nuevo al servidor
+  // Sends a new message to the server
   const sendMessage = async () => {
     if (currentMessage.trim()) {
       const data = {
-        userId: Date.now(), // Genera un ID temporal
+        userId: Date.now(), // Generates a temporary ID
         message: currentMessage,
         author: userName,
         room,
@@ -102,22 +102,22 @@ const Chat = ({ socket, userName, room, resetToInitialView }) => {
           minute: "2-digit",
         }),
       };
-      await socket.emit("send_message", data); // Envía el mensaje
-      setCurrentMessage(""); // Limpia el campo de entrada
+      await socket.emit("send_message", data); // Sends the message
+      setCurrentMessage(""); // Clears the input field
     }
   };
 
-  // Confirma si el usuario quiere salir del chat
+  // Confirms if the user wants to leave the chat
   const handleExit = () => {
     const confirm = window.confirm("¿Estás seguro que quieres salir del chat?");
-    if (confirm) resetToInitialView(); // Vuelve a la vista inicial
+    if (confirm) resetToInitialView(); // Goes back to the initial view
   };
 
-  // Renderiza el componente de chat
+  // Renders the chat component
   return (
     <Card fluid>
       <ChatHeader room={room} author={userName} />{" "}
-      {/* Muestra el encabezado del chat */}
+      {/* Displays the chat header */}
       <CardContent>
         <ScrollToBottom>
           <ChatMessages
@@ -138,7 +138,7 @@ const Chat = ({ socket, userName, room, resetToInitialView }) => {
                   newMessage: newMessageContent.trim(),
                 });
               }
-              setEditingMessageId(null); // Finaliza la edición
+              setEditingMessageId(null); // Ends editing
             }}
           />
         </ScrollToBottom>
@@ -155,7 +155,7 @@ const Chat = ({ socket, userName, room, resetToInitialView }) => {
           userName={userName}
         />
 
-        {/* Botón para abandonar el chat */}
+        {/* Button to leave the chat */}
         <Segment textAlign="center">
           <Button
             color="red"

@@ -6,10 +6,10 @@ const socketHandlers = require("./src/socket/socketHandlers");
 const PORT = process.env.PORT || 3001;
 const ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 
-// Crear el servidor HTTP
+// Create the HTTP server
 const server = http.createServer(app);
 
-// Configurar Socket.io
+// Configure Socket.io
 const io = new Server(server, {
   cors: {
     origin: ORIGIN,
@@ -17,10 +17,12 @@ const io = new Server(server, {
   },
 });
 
-// Manejo de eventos de Socket.io
+// Handle Socket.io events
 socketHandlers(io);
 
-// Iniciar el servidor
+// Start the server
 server.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+
+module.exports = server;

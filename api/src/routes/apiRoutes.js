@@ -1,25 +1,25 @@
-// Importa Express para crear rutas y manejar solicitudes HTTP
+// Import Express to create routes and handle HTTP requests
 const express = require("express");
 
-// Importa el modelo de mensajes desde la carpeta de modelos
+// Import the messages model from the models folder
 const { Message } = require("../models/Message");
 
-// Crea un enrutador de Express
+// Create an Express router
 const router = express.Router();
 
-// Define una ruta GET para obtener todos los mensajes
+// Define a GET route to fetch all messages
 router.get("/messages", async (req, res) => {
   try {
-    // Busca todos los documentos en la colección de mensajes
+    // Find all documents in the messages collection
     const messages = await Message.find();
 
-    // Devuelve los mensajes encontrados con un estado HTTP 200
+    // Return the found messages with an HTTP 200 status
     res.status(200).json(messages);
   } catch (error) {
-    // Maneja errores de servidor y devuelve un estado HTTP 500
+    // Handle server errors and return an HTTP 500 status
     res.status(500).json({ error: "Error al obtener mensajes" });
   }
 });
 
-// Exporta el enrutador para usarlo en otros archivos
+// Export the router to use it in other files
 module.exports = router;

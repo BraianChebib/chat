@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import Chat from "../components/Chat/Chat";
@@ -78,11 +79,11 @@ const JoinRoom = () => {
     <Container
       textAlign="center"
       style={{
-        height: "100vh", // Ocupa toda la altura del viewport
-        display: "flex", // Usa Flexbox
-        justifyContent: "center", // Centra horizontalmente
-        alignItems: "center", // Centra verticalmente
-        margin: 0, // Elimina cualquier margen
+        height: "100vh", // Occupy the entire height of the viewport
+        display: "flex", // Use Flexbox
+        justifyContent: "center", // Center horizontally
+        alignItems: "center", // Center vertically
+        margin: 0, // Remove any margin
       }}
     >
       {error.length > 0 && !serverError && (

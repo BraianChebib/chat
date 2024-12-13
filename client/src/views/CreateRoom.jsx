@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import io from "socket.io-client";
 import Chat from "../components/Chat/Chat";
@@ -25,7 +26,7 @@ const CreateRoom = () => {
   const [createRoom, setCreateRoom] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [error, setError] = useState([]);
-  const [serverError, setServerError] = useState(""); // Estado para errores del servidor
+  const [serverError, setServerError] = useState(""); // State for server errors
 
   const navigate = useNavigate();
 
@@ -58,7 +59,7 @@ const CreateRoom = () => {
           setRoom(createRoom);
           setShowChat(true);
         } else {
-          setServerError(response.message); // Mostrar error
+          setServerError(response.message); // Display error
         }
       });
     }
@@ -73,15 +74,15 @@ const CreateRoom = () => {
     <Container
       textAlign="center"
       style={{
-        height: "100vh", // Ocupa toda la altura del viewport
-        display: "flex", // Usa Flexbox
-        justifyContent: "center", // Centra horizontalmente
-        alignItems: "center", // Centra verticalmente
-        margin: 0, // Elimina cualquier margen
+        height: "100vh", // Occupy the entire height of the viewport
+        display: "flex", // Use Flexbox
+        justifyContent: "center", // Center horizontally
+        alignItems: "center", // Center vertically
+        margin: 0, // Remove any margin
       }}
     >
       {error.length > 0 &&
-        !serverError && ( // Mostrar solo error de validación si no hay error de servidor
+        !serverError && ( // Show only validation error if there is no server error
           <Message
             negative
             style={{ padding: "20px", fontSize: "18px", width: "80%" }}
@@ -105,7 +106,7 @@ const CreateRoom = () => {
         )}
 
       {serverError &&
-        !error.length && ( // Mostrar solo error de servidor si no hay errores de validación
+        !error.length && ( // Show only server error if there are no validation errors
           <Message
             negative
             style={{ padding: "20px", fontSize: "18px", width: "80%" }}

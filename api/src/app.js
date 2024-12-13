@@ -11,10 +11,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Conectar a la base de datos
+// Connect to the database
 connectToDatabase();
 
-// Rutas
+// Routes
 app.use("/api", apiRoutes);
 
 module.exports = app;

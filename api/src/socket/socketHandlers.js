@@ -1,14 +1,14 @@
-// Importa los modelos de MongoDB para Mensajes y Salas
+// Import MongoDB models for Messages and Rooms
 const { Message, Room } = require("../models/Message");
 const mongoose = require("mongoose");
 
-// Define los manejadores de eventos de Socket.IO
+// Define the Socket.IO event handlers
 const socketHandlers = (io) => {
-  // Maneja la conexión de un nuevo cliente
+  // Handle the connection of a new client
   io.on("connection", (socket) => {
     console.log(`User connected: ${socket.id}`);
 
-    // Evento para crear una nueva sala
+    // Event to create a new room
     socket.on("create_room", async (data) => {
       const { roomName, users } = data;
 
@@ -25,7 +25,7 @@ const socketHandlers = (io) => {
           });
         }
 
-        // Verifica si la sala ya existe
+        // Check if the room already exists
         const existingRoom = await Room.findOne({ roomName });
         if (existingRoom) {
           return socket.emit("room_created", {
@@ -35,11 +35,11 @@ const socketHandlers = (io) => {
           });
         }
 
-        // Crea la nueva sala y guarda en la base de datos
+        // Create the new room and save it to the database
         const newRoom = new Room({ roomName, users });
         await newRoom.save();
 
-        // Une al creador a la sala y confirma la creación
+        // Add the creator to the room and confirm creation
         socket.join(roomName);
         socket.emit("room_created", {
           success: true,
@@ -54,7 +54,7 @@ const socketHandlers = (io) => {
       }
     });
 
-    // Evento para unirse a una sala existente
+    // Event to join an existing room
     socket.on("join_room", async (data) => {
       const { room, userName } = data;
       socket.userName = userName;
@@ -68,7 +68,7 @@ const socketHandlers = (io) => {
           });
         }
 
-        // Verifica si el nombre de usuario está en uso
+        // Check if the username is already taken
         const userExists = existingRoom.users.some(
           (user) => user.username === userName
         );
@@ -80,7 +80,7 @@ const socketHandlers = (io) => {
           });
         }
 
-        // Agrega al usuario a la sala y carga el historial de mensajes
+        // Add the user to the room and load the message history
         existingRoom.users.push({
           userId: socket.id,
           username: userName,
@@ -102,7 +102,7 @@ const socketHandlers = (io) => {
       }
     });
 
-    // Solicita el historial de mensajes de una sala
+    // Request the message history of a room
     socket.on("request_history", async (data) => {
       const { room } = data;
 
@@ -118,7 +118,7 @@ const socketHandlers = (io) => {
       }
     });
 
-    // Maneja el envío de un nuevo mensaje
+    // Handle sending a new message
     socket.on("send_message", async (data) => {
       const { room, userId, message, author, time } = data;
 
@@ -131,7 +131,7 @@ const socketHandlers = (io) => {
         const newMessage = new Message({ room, userId, message, author, time });
         await newMessage.save();
 
-        // Relaciona el mensaje con la sala
+        // Associate the message with the room
         await Room.findOneAndUpdate(
           { roomName: room },
           { $push: { messages: newMessage._id } }
@@ -143,7 +143,7 @@ const socketHandlers = (io) => {
       }
     });
 
-    // Maneja la edición de mensajes
+    // Handle editing messages
     socket.on("edit_message", async (data) => {
       const { _id, newMessage } = data;
 
@@ -182,7 +182,7 @@ const socketHandlers = (io) => {
       }
     });
 
-    // Maneja la eliminación de mensajes
+    // Handle deleting messages
     socket.on("delete_message", async (data) => {
       const { room, messageId } = data;
 
@@ -205,7 +205,7 @@ const socketHandlers = (io) => {
       }
     });
 
-    // Maneja el estado de "escribiendo"
+    // Handle the "typing" state
     socket.on("typing", (data) => {
       const { room, userName } = data;
 
@@ -217,7 +217,7 @@ const socketHandlers = (io) => {
       socket.to(room).emit("display_typing", { userName });
     });
 
-    // Desconexión del usuario
+    // User disconnection
     socket.on("disconnect", async () => {
       const rooms = Array.from(socket.rooms);
       const room = rooms.length > 1 ? rooms[1] : null;

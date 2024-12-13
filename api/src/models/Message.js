@@ -1,31 +1,31 @@
-// Importa el paquete de Mongoose para interactuar con MongoDB
+// Import the Mongoose package to interact with MongoDB
 const mongoose = require("mongoose");
 
-// Define el esquema para la colección de salas de chat
+// Define the schema for the chat rooms collection
 const roomSchema = new mongoose.Schema({
-  roomName: { type: String, required: true, unique: true }, // Nombre único de la sala
+  roomName: { type: String, required: true, unique: true }, // Unique name of the room
   users: [
     {
-      userId: { type: String, required: true }, // ID único del usuario
-      username: { type: String, required: true }, // Nombre del usuario en la sala
+      userId: { type: String, required: true }, // Unique user ID
+      username: { type: String, required: true }, // Name of the user in the room
     },
   ],
-  messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }], // Referencias a mensajes asociados
+  messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }], // References to associated messages
 });
 
-// Define el esquema para la colección de mensajes
+// Define the schema for the messages collection
 const messageSchema = new mongoose.Schema({
-  room: { type: String, required: true }, // Nombre de la sala asociada al mensaje
-  userId: { type: String, required: true }, // ID del usuario que envió el mensaje
-  message: { type: String, required: true }, // Contenido del mensaje
-  author: { type: String, required: true }, // Nombre del usuario que envió el mensaje
-  time: { type: String, required: true }, // Hora de envío del mensaje
-  edited: { type: Boolean, default: false }, // Indica si el mensaje fue editado
+  room: { type: String, required: true }, // Name of the room associated with the message
+  userId: { type: String, required: true }, // ID of the user who sent the message
+  message: { type: String, required: true }, // Content of the message
+  author: { type: String, required: true }, // Name of the user who sent the message
+  time: { type: String, required: true }, // Time the message was sent
+  edited: { type: Boolean, default: false }, // Indicates if the message was edited
 });
 
-// Crea los modelos basados en los esquemas definidos
-const Room = mongoose.model("Room", roomSchema); // Modelo para las salas de chat
-const Message = mongoose.model("Message", messageSchema); // Modelo para los mensajes
+// Create the models based on the defined schemas
+const Room = mongoose.model("Room", roomSchema); // Model for the chat rooms
+const Message = mongoose.model("Message", messageSchema); // Model for the messages
 
-// Exporta los modelos para su uso en otras partes de la aplicación
+// Export the models for use in other parts of the application
 module.exports = { Room, Message };

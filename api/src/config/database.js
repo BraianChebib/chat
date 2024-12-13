@@ -1,21 +1,21 @@
-// Importa Mongoose para interactuar con MongoDB
+// Import Mongoose to interact with MongoDB
 const mongoose = require("mongoose");
 
-// Carga las variables de entorno desde un archivo .env
+// Load environment variables from a .env file
 require("dotenv").config();
 
-// Función asincrónica para conectar a la base de datos de MongoDB
+// Async function to connect to the MongoDB database
 const connectToDatabase = async () => {
-  // Intenta conectar a MongoDB usando la URL definida en las variables de entorno
+  // Try to connect to MongoDB using the URL defined in the environment variables
   mongoose
     .connect(process.env.URL_MONGODB)
-    .then(() => console.log("Conectado a MongoDB")) // Mensaje de éxito
+    .then(() => console.log("Conectado a MongoDB")) // Success message
     .catch((err) => {
-      // Muestra el error si la conexión falla
+      // Show the error if the connection fails
       console.error("Error de conexión:", err);
-      process.exit(1); // Finaliza la aplicación en caso de error crítico
+      process.exit(1); // Terminate the application in case of a critical error
     });
 };
 
-// Exporta la función para su uso en otros archivos
+// Export the function for use in other files
 module.exports = { connectToDatabase };

@@ -1,4 +1,4 @@
-import "./App.css";
+import React from "react"; 
 import InitChat from "./views/InitChat";
 import CreateRoom from "./views/CreateRoom";
 import JoinRoom from "./views/JoinRoom";
@@ -8,11 +8,11 @@ function App() {
   return (
     <>
       <Routes>
-        {/* Ruta de inicio  */}
+        {/* Home route */}
         <Route path="/" element={<InitChat />} />
-        {/* Ruta de Crear Sala  */}
+        {/* Create Room route */}
         <Route path="/CreateRoom" element={<CreateRoom />} />
-        {/* Ruta de Unirse a Sala  */}
+        {/* Join Room route */}
         <Route path="/JoinRoom" element={<JoinRoom />} />
       </Routes>
     </>
