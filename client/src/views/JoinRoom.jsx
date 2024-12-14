@@ -14,7 +14,7 @@ import {
 } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
-const port = import.meta.env.APP_API_URL || "http://localhost:3001";
+const port = import.meta.env.VITE_APP_API_URL || "http://localhost:3001";
 const socket = io.connect(`${port}`);
 
 const JoinRoom = () => {

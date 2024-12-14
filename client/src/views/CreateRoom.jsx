@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 const userId = uuidv4();
-const port = import.meta.env.APP_API_URL || "http://localhost:3001";
+const port = import.meta.env.VITE_APP_API_URL || "http://localhost:3001";
 const socket = io.connect(`${port}`);
 
 const CreateRoom = () => {
